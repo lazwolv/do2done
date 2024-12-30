@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - {{ user.first_name }}{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>Your Profile</h2>
+        <a href="{{ url_for('users.edit_profile') }}" class="btn-edit">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+    </div>
+
+    <div class="profile-info">
+        <div class="info-group">
+            <label>First Name</label>
+            <p>{{ user.first_name }}</p>
+        </div>
+
+        <div class="info-group">
+            <label>Last Name</label>
+            <p>{{ user.last_name }}</p>
+        </div>
+
+        <div class="info-group">
+            <label>Phone Number</label>
+            <p>{{ user.phone_number }}</p>
+        </div>
+
+        <div class="info-group">
+            <label>Account Status</label>
+            <p>{% if user.verified %}Verified{% else %}Unverified{% endif %}</p>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{{ url_for('auth.change_password') }}" class="btn-secondary">
+            <i class="fas fa-key"></i> Change Password
+        </a>
+        <form action="{{ url_for('auth.delete_account') }}" method="POST" class="delete-form">
+            <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
+                <i class="fas fa-trash"></i> Delete Account
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

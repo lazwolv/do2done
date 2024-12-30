@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+<div class="tasks-container">
+    {% if current_user.is_authenticated %}
+    <h2>My Tasks</h2>
+
+    <!-- Add Task Form -->
+    <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
+        <input type="text" name="task" placeholder="Enter new task..." required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <div class="task-list">
+        {% if tasks %}
+        {% for task in tasks %}
+        <div class="task-item {% if task.completed %}completed{% endif %}">
+            <!-- Task content here -->
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No tasks yet. Add your first task above!</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="welcome-message">
+        <h2>Welcome to Do2Done</h2>
+        <p>Please sign up or log in to manage your tasks.</p>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.signup') }}" class="btn">Sign Up</a>
+            <a href="{{ url_for('auth.login') }}" class="btn">Login</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

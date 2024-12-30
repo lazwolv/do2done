@@ -9,23 +9,24 @@
 !requirements.txt
 
 # And not these directories...
-!*/
+!*/app
 
-# Python specific
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
 
 # Virtual Environment
 venv/
 env/
 ENV/
 
-# Environment variables
+# Environment Variables
 .env
 .env.*
 
-# IDE specific
+# IDE
 .idea/
 .vscode/
 *.swp
@@ -33,3 +34,13 @@ ENV/
 # Database
 *.db
 *.sqlite3
+
+# Track these directories and files
+!app/
+!app/**
+!migrations/
+!migrations/**
+!requirements.txt
+!README.md
+!config.py
+!.gitignore
