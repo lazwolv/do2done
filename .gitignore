@@ -1,62 +1,35 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!README.md
+!config.py
+!create-db-template.sql
+!requirements.txt
+
+# And not these directories...
+!*/
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
 
 # Virtual Environment
 venv/
 env/
 ENV/
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Flask
-instance/
-.webassets-cache
-
 # Environment variables
 .env
 .env.*
 
-# IDE specific files
+# IDE specific
 .idea/
 .vscode/
 *.swp
-*.swo
-.DS_Store
 
 # Database
 *.db
 *.sqlite3
-
-# Logs
-*.log
-logs/
-
-# Local development settings
-local_settings.py
-
-# Coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-coverage.xml
-*.cover
