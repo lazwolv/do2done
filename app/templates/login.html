@@ -5,7 +5,7 @@
 {% block content %}
 <div class="auth-container">
     <h2>Login</h2>
-    <form method="POST" action="{{ url_for('auth.login') }}">
+    <form method="POST" action="{{ url_for('users.login') }}">
         <div class="form-group">
             <label for="phone_number">Phone Number</label>
             <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -18,8 +18,8 @@
         <button type="submit">Login</button>
     </form>
     <div class="auth-links">
-        <a href="{{ url_for('auth.signup') }}">Don't have an account? Sign Up</a>
-        <a href="{{ url_for('auth.reset_password') }}">Forgot Password?</a>
+        <a href="{{ url_for('users.signup') }}">Don't have an account? Sign Up</a>
+        <a href="{{ url_for('users.reset_password') }}">Forgot Password?</a>
     </div>
 </div>
 {% endblock %}

@@ -30,11 +30,14 @@ body {
     box-shadow: 0 2px 20px rgba(0, 245, 255, 0.1);
 }
 
+.nav-bar a {
+    text-decoration: none;
+}
+
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
     background: linear-gradient(45deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -49,8 +52,8 @@ body {
     background: var(--surface);
     padding: 2rem;
     border-radius: 10px;
-    max-width: 400px;
-    margin: 2rem auto;
+    max-width: 390px;
+    margin: 10rem auto;
     box-shadow: 0 4px 30px rgba(0, 245, 255, 0.1);
 }
 
@@ -61,7 +64,7 @@ body {
 input {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid transparent;
+    border: 2px solid var(--primary);
     background: var(--background);
     color: var(--text);
     border-radius: 5px;
@@ -70,7 +73,7 @@ input {
 
 input:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--secondary);
     box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
 }
 
@@ -87,6 +90,9 @@ button {
 
 button:hover {
     transform: translateY(-2px);
+}
+button:active {
+    transform: translateY(3px);
 }
 
 .auth-links {
@@ -129,7 +135,7 @@ button:hover {
 
 .tasks-container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 10rem auto;
     padding: 20px;
 }
 
@@ -140,7 +146,7 @@ button:hover {
 }
 
 .task-item {
-    border: 1px solid #ddd;
+    border: 1px solid var(--text);
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -162,7 +168,8 @@ button:hover {
 }
 
 .completed {
-    background-color: #f8f9fa;
+    background-color: var(--surface);
+    border-color: var(--secondary);
 }
 
 .completed h3 {
@@ -171,15 +178,17 @@ button:hover {
 }
 
 .profile-container {
+    color: var(--surface);
     max-width: 600px;
-    margin: 2rem auto;
+    background: var(--surface);
     padding: 2rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin: 10rem auto;
+    box-shadow: 0 4px 30px rgba(0, 245, 255, 0.1);
 }
 
 .profile-header {
+    color: var(--text);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -193,13 +202,13 @@ button:hover {
 .info-group label {
     display: block;
     font-weight: bold;
-    color: #666;
+    color: var(--primary);
     margin-bottom: 0.5rem;
 }
 
 .info-group p {
     font-size: 1.1rem;
-    color: #333;
+    color: var(--text);
 }
 
 .profile-actions {

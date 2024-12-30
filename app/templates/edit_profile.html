@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Edit Profile</h2>
+    <form method="POST" action="{{ url_for('users.edit_profile') }}">
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" value="{{ current_user.first_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" value="{{ current_user.phone_number }}" required>
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

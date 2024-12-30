@@ -26,10 +26,8 @@ def create_app():
     TWILIO_PHONE_NUMBER = app.config['TWILIO_PHONE_NUMBER']
     
     # Register blueprints
-    from app.routes.auth import auth_bp
     from app.routes.tasks import tasks_bp
     from app.routes.users import users_bp
-    app.register_blueprint(auth_bp)
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
     app.register_blueprint(users_bp)
     
