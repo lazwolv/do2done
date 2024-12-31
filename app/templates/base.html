@@ -28,14 +28,11 @@
             {% endif %}
 
             <div class="language-selector">
-                <select onchange="window.location.href=this.value" aria-label="{{ _('Select Language') }}">
-                    <option value="{{ url_for('set_language', lang='en') }}" {% if g.locale=='en' %}selected{% endif %}>
-                        {{ _('English') }}
-                    </option>
-                    <option value="{{ url_for('set_language', lang='es') }}" {% if g.locale=='es' %}selected{% endif %}>
-                        {{ _('Español') }}
-                    </option>
+                <select onchange="window.location.href='/set-language/' + this.value;">
+                    <option value="en" {% if session.get('lang')=='en' %}selected{% endif %}>{{ _('English') }}</option>
+                    <option value="es" {% if session.get('lang')=='es' %}selected{% endif %}>{{ _('Español') }}</option>
                 </select>
+
             </div>
         </div>
     </nav>
