@@ -4,22 +4,23 @@
 
 {% block content %}
 <div class="auth-container">
-    <h2>Login</h2>
+    <h2>{{ _('Login') }}</h2>
+    <p>Current Locale: {{ g.locale }}</p>
     <form method="POST" action="{{ url_for('users.login') }}">
         <div class="form-group">
-            <label for="phone_number">Phone Number</label>
+            <label for="phone_number">{{ _('Phone Number') }}</label>
             <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 placeholder="123-456-7890" required>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">{{ _('Password') }}</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">{{ _('Login') }}</button>
     </form>
     <div class="auth-links">
-        <a href="{{ url_for('users.signup') }}">Don't have an account? Sign Up</a>
-        <a href="{{ url_for('users.reset_password') }}">Forgot Password?</a>
+        <a href="{{ url_for('users.signup') }}">{{ _("Don't have an account? Sign Up") }}</a>
+        <a href="{{ url_for('users.reset_password') }}">{{ _('Forgot Password?') }}</a>
     </div>
 </div>
 {% endblock %}

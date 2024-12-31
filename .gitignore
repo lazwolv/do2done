@@ -7,6 +7,7 @@
 !config.py
 !create-db-template.sql
 !requirements.txt
+!commands.txt
 
 # And not these directories...
 !*/app

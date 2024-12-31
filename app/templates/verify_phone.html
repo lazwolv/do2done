@@ -4,17 +4,17 @@
 
 {% block content %}
 <div class="auth-container">
-    <h2>Verify Phone Number</h2>
-    <p>We've sent a verification code to your phone number.</p>
+    <h2>{{ _('Verify Phone Number') }}</h2>
+    <p>{{ _("We've sent a verification code to your phone number.") }}</p>
     <form method="POST" action="{{ url_for('users.verify_phone') }}">
         <div class="form-group">
-            <label for="code">Enter Verification Code</label>
+            <label for="code">{{ _('Enter Verification Code') }}</label>
             <input type="text" id="code" name="code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required>
         </div>
-        <button type="submit">Verify</button>
+        <button type="submit">{{ _('Verify') }}</button>
     </form>
     <div class="auth-links">
-        <a href="#" onclick="resendCode()">Resend Code</a>
+        <a href="#" onclick="resendCode()">{{ _('Resend Code') }}</a>
     </div>
 </div>
 

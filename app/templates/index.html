@@ -8,7 +8,7 @@
 
     <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
         <input type="text" name="task" placeholder="Enter new task..." required>
-        <button type="submit">Add Task</button>
+        <button type="submit">{{ _('Add Task') }}</button>
     </form>
 
     <!-- Task List -->
@@ -22,12 +22,12 @@
                     {% if not task.completed %}
                     <form action="{{ url_for('tasks.complete_task', task_id=task.id) }}" method="POST"
                         class="inline-form">
-                        <button type="submit">Complete</button>
+                        <button type="submit">{{ _('Complete') }}</button>
                     </form>
                     {% endif %}
                     <form action="{{ url_for('tasks.delete_task', task_id=task.id) }}" method="POST"
                         class="inline-form">
-                        <button type="submit">Delete</button>
+                        <button type="submit">{{ _('Delete') }}</button>
                     </form>
                 </div>
             </div>
@@ -38,8 +38,8 @@
     </div>
     {% else %}
     <div class="welcome-message">
-        <h2>Welcome to Do2Done</h2>
-        <p>Please sign up or log in to manage your tasks.</p>
+        <h2>{{ _('Welcome to Do2Done') }}</h2>
+        <p>{{ _('Please sign up or log in to manage your tasks.') }}</p>
         <div class="auth-buttons">
             <a href="{{ url_for('users.signup') }}" class="btn">Sign Up</a>
             <a href="{{ url_for('users.login') }}" class="btn">Login</a>

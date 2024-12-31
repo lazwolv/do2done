@@ -11,3 +11,7 @@ class Config:
     TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
     TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
     TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
+    LANGUAGES = ['en', 'es']
+    BABEL_DEFAULT_LOCALE = 'en'
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    BABEL_TRANSLATION_DIRECTORIES = os.path.join(BASE_DIR, 'app/translations')

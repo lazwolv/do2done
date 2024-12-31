@@ -1,10 +1,11 @@
 import random
 import phonenumbers
 from datetime import datetime, timedelta
-from flask import Blueprint, render_template, request, redirect, session, url_for, flash
+from flask import Blueprint, render_template, redirect, request, url_for, flash, session, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from app.models.users import User, VerificationCode
 from app import db, client, TWILIO_PHONE_NUMBER
+from flask_babel import _
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -45,7 +46,7 @@ def signup():
         try:
             phone_number_obj = phonenumbers.parse(phone, "US")
             if not phonenumbers.is_valid_number(phone_number_obj):
-                flash('Invalid phone number')
+                flash(_('Invalid phone number'))
                 return redirect(url_for('users.signup'))
             formatted_number = phonenumbers.format_number(phone_number_obj, 
                                                         phonenumbers.PhoneNumberFormat.E164)

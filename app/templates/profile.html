@@ -5,7 +5,7 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
-        <h2>Your Profile</h2>
+        <h2>{{ _('Your Profile') }}</h2>
         <a href="{{ url_for('users.edit_profile') }}" class="btn-edit">
             <i class="fas fa-edit"></i> Edit Profile
         </a>
@@ -13,34 +13,34 @@
 
     <div class="profile-info">
         <div class="info-group">
-            <label>First Name</label>
+            <label>{{ _('First Name') }}</label>
             <p>{{ user.first_name }}</p>
         </div>
 
         <div class="info-group">
-            <label>Last Name</label>
+            <label>{{ _('Last Name') }}</label>
             <p>{{ user.last_name }}</p>
         </div>
 
         <div class="info-group">
-            <label>Phone Number</label>
+            <label>{{ _('Phone Number') }}</label>
             <p>{{ user.phone_number }}</p>
         </div>
 
         <div class="info-group">
-            <label>Account Status</label>
-            <p>{% if user.verified %}Verified{% else %}Unverified{% endif %}</p>
+            <label>{{ _('Account Status') }}</label>
+            <p>{% if user.verified %}{{ _('Verified') }}{% else %}{{ _('Unverified') }}{% endif %}</p>
         </div>
     </div>
 
     <div class="profile-actions">
         <a href="{{ url_for('users.change_password') }}" class="btn-secondary">
-            <i class="fas fa-key"></i> Change Password
+            <i class="fas fa-key"></i> {{ _('Change Password') }}
         </a>
         <form action="{{ url_for('users.delete_account') }}" method="POST" class="delete-form">
             <button type="submit" class="btn-danger"
                 onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
-                <i class="fas fa-trash"></i> Delete Account
+                <i class="fas fa-trash"></i> {{ _('Delete Account') }}
             </button>
         </form>
     </div>
