@@ -5,7 +5,7 @@ from flask import Flask, g, redirect, render_template, request, session, current
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_babel import Babel, get_translations, refresh, gettext as _, ngettext
+from flask_babel import Babel, lazy_gettext, get_translations, refresh, gettext as _, ngettext
 from twilio.rest import Client
 
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +33,7 @@ def create_app():
                 return request.cookies.get('lang')
             if 'lang' in session:
                 return session['lang']
-            return request.accept_languages.best_match(['en', 'es'])
+            return 'en'  # Default to English instead of checking browser preferences
         except RuntimeError:
             return 'en'
 
@@ -43,23 +43,33 @@ def create_app():
     @app.context_processor
     def inject_babel():
         return dict(babel=babel)
+    
+    @app.context_processor
+    def utility_processor():
+        return {
+            'get_locale': get_locale,
+            'get_translations': get_translations
+        }
 
     @app.before_request
     def before_request():
         g.locale = str(get_locale())
-        if hasattr(current_app, 'babel'):
-            current_app.babel.refresh()
+        logger.info(f"Loading translations for locale: {g.locale}")
+        
+        # Force reload translations in the correct order
         refresh()
-        # Force Jinja to reload translations
-        current_app.jinja_env.cache = {}
+        translations = get_translations()
+        current_app.jinja_env.install_gettext_translations(translations)
+        
+        # logger.info(f"Translation catalog: {translations._catalog}")
 
     with app.app_context():
         translations = get_translations()
         app.jinja_env.add_extension('jinja2.ext.i18n')
         app.jinja_env.install_gettext_translations(translations)
         
-        logger.info(f"Translation directory: {app.config['BABEL_TRANSLATION_DIRECTORIES']}")
-        logger.info(f"Available translations: {[trans.language for trans in babel.list_translations()]}")
+        # logger.info(f"Translation directory: {app.config['BABEL_TRANSLATION_DIRECTORIES']}")
+        # logger.info(f"Available translations: {[trans.language for trans in babel.list_translations()]}")
 
     db.init_app(app)
     login_manager.init_app(app)
@@ -89,25 +99,21 @@ def create_app():
         if lang in app.config['LANGUAGES']:
             session['lang'] = lang
             session.permanent = True
-            session.modified = True
             
-            next_url = request.referrer or url_for('home')
-            response = redirect(next_url)
+            # Clear all caches
+            if hasattr(current_app, 'babel_translations'):
+                delattr(current_app, 'babel_translations')
+            current_app.jinja_env.cache.clear()
             
-            max_age = 365 * 24 * 60 * 60
-            response.set_cookie(
-                'lang',
-                lang,
-                max_age=max_age,
-                httponly=False,
-                samesite='Lax',
-                secure=False
-            )
+            # Force reload translations
+            with app.app_context():
+                refresh()
+                translations = get_translations()
+                app.jinja_env.install_gettext_translations(translations)
             
+            response = redirect(request.referrer or url_for('home'))
+            response.set_cookie('lang', lang, max_age=365*24*60*60)
             response.headers['Cache-Control'] = 'no-store, must-revalidate'
-            response.headers['Pragma'] = 'no-cache'
-            response.vary.add('Cookie')
-            
             return response
         return redirect(url_for('home'))
 

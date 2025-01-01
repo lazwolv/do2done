@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-31 00:34-0800\n"
+"POT-Creation-Date: 2024-12-31 14:32-0800\n"
 "PO-Revision-Date: 2024-12-30 22:47-0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -18,45 +18,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: app/__init__.py:18
+msgid "Please log in to access this page."
+msgstr ""
+
 #: app/routes/users.py:49
 msgid "Invalid phone number"
 msgstr "Número de teléfono inválido"
 
-#: app/templates/base.html:7 app/templates/base.html:16
+#: app/templates/base.html:7 app/templates/base.html:17
 msgid "Do2Done"
 msgstr "Do2Done"
 
-#: app/templates/base.html:22
+#: app/templates/base.html:23
 msgid "Tasks"
 msgstr "Tareas"
 
-#: app/templates/base.html:23
+#: app/templates/base.html:24
 msgid "Profile"
 msgstr "Perfil"
 
-#: app/templates/base.html:24
+#: app/templates/base.html:25
 msgid "Logout"
 msgstr "Cerrar Sesion"
 
-#: app/templates/base.html:26 app/templates/login.html:7
+#: app/templates/base.html:27 app/templates/login.html:7
 #: app/templates/login.html:18
 msgid "Login"
 msgstr "Iniciar Sesión"
 
-#: app/templates/base.html:27 app/templates/signup.html:7
+#: app/templates/base.html:28 app/templates/signup.html:7
 #: app/templates/signup.html:26
 msgid "Sign Up"
 msgstr "Regístrese"
-
-#: app/templates/base.html:31
-msgid "Select Language"
-msgstr "Seleccionar Idioma"
 
 #: app/templates/base.html:33
 msgid "English"
 msgstr "Inglés"
 
-#: app/templates/base.html:36
+#: app/templates/base.html:34
 msgid "Español"
 msgstr "Español"
 
@@ -627,4 +627,7 @@ msgstr ""
 #: venv/Lib/site-packages/wtforms/fields/numeric.py:197
 msgid "Not a valid float value."
 msgstr ""
+
+#~ msgid "Select Language"
+#~ msgstr "Seleccionar Idioma"
 

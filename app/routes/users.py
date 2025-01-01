@@ -39,20 +39,16 @@ def signup():
     if request.method == 'POST':
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
-        phone = request.form.get('phone_number')
+        phone = ''.join(filter(str.isdigit, request.form.get('phone_number')))
         password = request.form.get('password')
-    
-        # Validate phone number format
-        try:
-            phone_number_obj = phonenumbers.parse(phone, "US")
-            if not phonenumbers.is_valid_number(phone_number_obj):
-                flash(_('Invalid phone number'))
-                return redirect(url_for('users.signup'))
-            formatted_number = phonenumbers.format_number(phone_number_obj, 
-                                                        phonenumbers.PhoneNumberFormat.E164)
-        except phonenumbers.NumberParseException:
-            flash('Invalid phone number format')
+        
+        # Validate phone number is exactly 10 digits
+        if len(phone) != 10:
+            flash(_('Phone number must be 10 digits'))
             return redirect(url_for('users.signup'))
+            
+        # Format to E.164 for Twilio (+1 for US numbers)
+        formatted_number = f"+1{phone}"
         
         if User.query.filter_by(phone_number=formatted_number).first():
             flash('Phone number already registered')
@@ -77,9 +73,7 @@ def signup():
         # Send verification SMS
         send_verification_sms(formatted_number, verification_code)
         
-        # Store phone in session for verification
         session['user_id'] = user.id
-        
         flash('Account created successfully. Please verify your phone number.')
         return redirect(url_for('users.verify_phone'))
     
@@ -88,19 +82,16 @@ def signup():
 @users_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        phone_number = request.form.get('phone_number')
+        phone = ''.join(filter(str.isdigit, request.form.get('phone_number')))
+        formatted_number = f"+1{phone}" if len(phone) == 10 else None
         password = request.form.get('password')
         
-        try:
-            phone_obj = phonenumbers.parse(phone_number, "US")
-            formatted_number = phonenumbers.format_number(phone_obj,
-                                                    phonenumbers.PhoneNumberFormat.E164)
-        except phonenumbers.NumberParseException:
-            flash('Invalid phone number format')
+        if not formatted_number:
+            flash('Invalid phone number')
             return redirect(url_for('users.login'))
         
         user = User.query.filter_by(phone_number=formatted_number).first()
-        
+
         if user and user.check_password(password):
             if not user.verified:
                 flash('Please verify your phone number first by creating an account')
@@ -159,22 +150,12 @@ def reset_password():
     if request.method == 'POST':
         # Handle phone number submission
         if 'phone_number' in request.form and 'code' not in request.form:
-            phone_number = request.form.get('phone_number')
-            try:
-                phone_obj = phonenumbers.parse(phone_number, "US")
-                formatted_number = phonenumbers.format_number(phone_obj, 
-                                                            phonenumbers.PhoneNumberFormat.E164)
-                user = User.query.filter_by(phone_number=formatted_number).first()
-            
-                if user:
-                    session['reset_phone'] = formatted_number
-                    send_verification_sms(formatted_number)
-                    return render_template('reset_password.html', show_code_form=True)
-            
-                flash('Phone number not found')
-            
-            except phonenumbers.NumberParseException:
-                flash('Invalid phone number format')
+            phone = ''.join(filter(str.isdigit, request.form.get('phone_number')))
+            formatted_number = f"+1{phone}" if len(phone) == 10 else None
+
+            if not formatted_number:
+                flash('Invalid phone number')
+                return redirect(url_for('users.reset_password'))
         
             return redirect(url_for('reset_password'))
     
@@ -219,7 +200,7 @@ def delete_account():
     db.session.commit()
     logout_user()
     flash('Your account has been deleted.')
-    return redirect(url_for('users.register'))
+    return redirect(url_for('users.signup'))
 
 @users_bp.route('/change-password', methods=['GET', 'POST'])
 @login_required
@@ -242,13 +223,11 @@ def change_password():
 @users_bp.route('/recover-account', methods=['GET', 'POST'])
 def recover_account():
     if request.method == 'POST':
-        phone_number = request.form.get('phone_number')
-        try:
-            phone_number_obj = phonenumbers.parse(phone_number, "US")
-            formatted_number = phonenumbers.format_number(phone_number_obj, 
-                                                        phonenumbers.PhoneNumberFormat.E164)
-        except phonenumbers.NumberParseException:
-            flash('Invalid phone number format')
+        phone = ''.join(filter(str.isdigit, request.form.get('phone_number')))
+        formatted_number = f"+1{phone}" if len(phone) == 10 else None
+        
+        if not formatted_number:
+            flash('Invalid phone number')
             return redirect(url_for('users.recover_account'))
             
         user = User.query.filter_by(phone_number=formatted_number).first()
@@ -302,24 +281,30 @@ def profile():
 @login_required
 def edit_profile():
     if request.method == 'POST':
-        phone = request.form.get('phone_number')
+        phone = ''.join(filter(str.isdigit, request.form.get('phone_number')))
         
-        # Validate phone number format
-        try:
-            phone_number_obj = phonenumbers.parse(phone, "US")
-            if not phonenumbers.is_valid_number(phone_number_obj):
-                flash('Invalid phone number')
-                return redirect(url_for('users.edit_profile'))
-            formatted_number = phonenumbers.format_number(phone_number_obj, 
-                                                    phonenumbers.PhoneNumberFormat.E164)
-        except phonenumbers.NumberParseException:
-            flash('Invalid phone number format')
+        if len(phone) != 10:
+            flash('Phone number must be 10 digits')
             return redirect(url_for('users.edit_profile'))
-
+            
+        formatted_number = f"+1{phone}"
+        
+        # Check if phone number is already in use by another user
+        existing_user = User.query.filter(
+            User.phone_number == formatted_number,
+            User.id != current_user.id
+        ).first()
+        
+        if existing_user:
+            flash('Phone number already in use')
+            return redirect(url_for('users.edit_profile'))
+        
         current_user.first_name = request.form.get('first_name')
         current_user.last_name = request.form.get('last_name')
         current_user.phone_number = formatted_number
         db.session.commit()
+        
         flash('Profile updated successfully')
         return redirect(url_for('users.profile'))
+        
     return render_template('edit_profile.html', user=current_user)

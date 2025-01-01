@@ -15,9 +15,9 @@
             <input type="text" id="last_name" name="last_name" required>
         </div>
         <div class="form-group">
-            <label for="phone_number">{{ _('Phone Number') }}</label>
-            <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                placeholder="123-456-7890" required>
+            <label for="phone_number">{{ _("Phone Number") }}</label>
+            <input type="tel" id="phone_number" name="phone_number" placeholder="1234567890" minlength="10"
+                maxlength="10" pattern="[0-9]{10}" required>
         </div>
         <div class="form-group">
             <label for="password">{{ _('Password') }}</label>

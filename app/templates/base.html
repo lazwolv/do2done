@@ -1,41 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ g.locale }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('Do2Done') }} - {% block title %}{% endblock %}</title>
+    <title>{{ _("Do2Done") }} - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
 
 <body>
     <nav class="nav-bar">
         <div class="logo">
             <a href="{{ url_for('tasks.index') }}">
-                <i class="fas fa-check-double"></i> {{ _('Do2Done') }}
+                <i class="fas fa-check-double"></i> {{ _("Do2Done") }}
             </a>
         </div>
 
+        <button class="burger-menu" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <div class="nav-links">
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('tasks.index') }}"><i class="fas fa-tasks"></i> {{ _('Tasks') }}</a>
-            <a href="{{ url_for('users.profile') }}"><i class="fas fa-user"></i> {{ _('Profile') }}</a>
-            <a href="{{ url_for('users.logout') }}"><i class="fas fa-sign-out-alt"></i> {{ _('Logout') }}</a>
+            <a href="{{ url_for('tasks.index') }}"><i class="fas fa-tasks"></i> {{ _("Tasks") }}</a>
+            <a href="{{ url_for('users.profile') }}"><i class="fas fa-user"></i> {{ _("Profile") }}</a>
+            <a href="{{ url_for('users.logout') }}"><i class="fas fa-sign-out-alt"></i> {{ _("Logout") }}</a>
             {% else %}
-            <a href="{{ url_for('users.login') }}"><i class="fas fa-sign-in-alt"></i> {{ _('Login') }}</a>
-            <a href="{{ url_for('users.signup') }}"><i class="fas fa-user-plus"></i> {{ _('Sign Up') }}</a>
+            <a href="{{ url_for('users.login') }}"><i class="fas fa-sign-in-alt"></i> {{ _("Login") }}</a>
+            <a href="{{ url_for('users.signup') }}"><i class="fas fa-user-plus"></i> {{ _("Sign Up") }}</a>
             {% endif %}
 
             <div class="language-selector">
                 <select onchange="window.location.href='/set-language/' + this.value;">
-                    <option value="en" {% if session.get('lang')=='en' %}selected{% endif %}>{{ _('English') }}</option>
-                    <option value="es" {% if session.get('lang')=='es' %}selected{% endif %}>{{ _('Español') }}</option>
+                    <option value="en" {{ 'selected' if g.locale=='en' else '' }}>{{ _("English") }}</option>
+                    <option value="es" {{ 'selected' if g.locale=='es' else '' }}>{{ _("Español") }}</option>
                 </select>
-
             </div>
         </div>
     </nav>
+
 
     <main class="container">
         {% with messages = get_flashed_messages() %}
@@ -50,6 +55,7 @@
 
         {% block content %}{% endblock %}
     </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 </html>
